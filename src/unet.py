@@ -2,9 +2,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-
 class Unet(nn.Module):
-    def __init__(self, in_channels = 3, out_channels = 3, features = [64, 128, 256, 512]):
+    def __init__(self, in_channels = 1, out_channels = 1, features = [64, 128, 256, 512]):
         super(Unet, self).__init__()
         self.encoder = nn.ModuleList()
         self.decoder = nn.ModuleList()
@@ -47,5 +46,3 @@ class Unet(nn.Module):
                 nn.ReLU(inplace=True)
                 
         )
-        
-    
