@@ -10,12 +10,13 @@ import matplotlib.pyplot as plt
 # Hyperparameters
 device = "cuda" if torch.cuda.is_available() else "cpu"
 lr = 1e-4
-epochs = 150
+epochs = 200
 batch_size = 32
 timesteps = 300
+time_emb_dim = 256  # Dimension of time embedding
 
 # Define the model and diffusion process
-unet_model = Unet().to(device)
+unet_model = Unet(in_channels=1, out_channels=1, features=[64, 128, 256, 512], time_dim=time_emb_dim).to(device)
 diffusion_model = Diffusion(unet_model, timesteps=timesteps, device = device).to(device)
 optimizer = optim.Adam(diffusion_model.parameters(), lr=lr,  weight_decay=1e-5)
 mse_loss_fn = nn.MSELoss()
