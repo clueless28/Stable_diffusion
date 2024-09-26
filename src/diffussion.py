@@ -38,11 +38,14 @@ class Diffusion(nn.Module):
 
     def sample(self, img_shape, t, device):
         xt = torch.randn(img_shape).to(device)
+        
+        # Create a time tensor for diffusion steps
         for t in reversed(range(self.timesteps)):
-            noise_pred = self.reverse_process(xt, t)
+            t_tensor = torch.tensor([t], dtype=torch.float32, device=device)  # Convert t to a tensor
+            noise_pred = self.reverse_process(xt, t_tensor)
             xt = self.p_sample(xt, noise_pred, t, device)
+        
         return xt
-
     
     def p_sample(self, xt, noise_pred, t, device, dt=1e-2):
         beta_t = self.betas[t].reshape(-1, 1, 1, 1).to(device)
